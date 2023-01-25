@@ -37,14 +37,18 @@ while start_date.date() < today:
             parsed_xml = xmltodict.parse(response.text)
             tarih = parsed_xml['Tarih_Date']['@Tarih']
             currency = parsed_xml['Tarih_Date']['Currency']
-            currency_data = []
+            currency_data = dict()
             for item in currency:
-                currency_data.append(dict(kod=item["@Kod"], forex_buy=item["ForexBuying"], forex_sell=item["ForexSelling"]))
+                kod = item["@Kod"]
+                forex_buy = item["ForexBuying"]
+                forex_sell = item["ForexSelling"]
+                currency_data[kod] = dict(forex_buy=forex_buy, forex_sell=forex_sell)
 
 
-            merkez_bankasi_data.append(dict(tarih=tarih, data=currency_data))
+            merkez_bankasi_data.append(dict(tarih=tarih, data=currency_data, tatil=False))
+
         else:
-            merkez_bankasi_data.append(dict(tarih=datetime.datetime.strftime(start_date, "%Y-%m-%d"), data=currency_data))
+            merkez_bankasi_data.append(dict(tarih=datetime.datetime.strftime(start_date, "%Y-%m-%d"), data=currency_data, tatil=True))
 
         start_date = start_date + datetime.timedelta(days=1)
 
