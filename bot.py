@@ -17,7 +17,7 @@ if left_at is not None:
     start_date = datetime.datetime.strptime(left_at, "%Y-%m-%d")
     merkez_bankasi_data = data
 else:
-    start_date = datetime.datetime(2022, 1, 1)
+    start_date = datetime.datetime(2021, 12, 30)
     merkez_bankasi_data = []
 today = datetime.date.today()
 
@@ -45,7 +45,7 @@ while start_date.date() < today:
                 currency_data[kod] = dict(forex_buy=forex_buy, forex_sell=forex_sell)
 
 
-            merkez_bankasi_data.append(dict(tarih=tarih, data=currency_data, tatil=False))
+            merkez_bankasi_data.append(dict(tarih=datetime.datetime.strptime(tarih, "%d.%m.%Y").strftime("%Y-%m-%d"), data=currency_data, tatil=False))
 
         else:
             merkez_bankasi_data.append(dict(tarih=datetime.datetime.strftime(start_date, "%Y-%m-%d"), data=currency_data, tatil=True))
